@@ -1,7 +1,51 @@
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
+using Microsoft.OpenApi.Models;
+using TechChallengeFIAP.Middlewares;
+using TechChallengeFIAP.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(builder.Configuration["ElasticSearch:Uri"]))
+    {
+        AutoRegisterTemplate = true,
+    })
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
 // Add services to the container.
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 21))));
+
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddControllersWithViews();
+
+// Configure Swagger
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Contact API",
+        Version = "v1",
+        Description = "API for managing contacts",
+        Contact = new OpenApiContact
+        {
+            Name = "Your Name",
+            Email = "your-email@example.com"
+        }
+    });
+    // Optionally include XML comments if you have XML documentation enabled
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 
@@ -9,7 +53,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -19,6 +62,19 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Use custom request logging middleware
+app.UseRequestLogging();
+
+// Enable middleware to serve generated Swagger as a JSON endpoint.
+app.UseSwagger();
+
+// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contact API V1");
+    c.RoutePrefix = string.Empty; // Serve the UI at the app's root
+});
 
 app.MapControllerRoute(
     name: "default",
