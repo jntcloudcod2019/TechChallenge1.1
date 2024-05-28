@@ -10,9 +10,16 @@ namespace TechChallengeFIAP.Models
     {
         private readonly string _connectionString;
 
+        public ContactDbContext Context { get; }
+
         public ContactRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
+
+        public ContactRepository(ContactDbContext context)
+        {
+            Context = context;
         }
 
         public async Task<IEnumerable<Contact>> GetAllContactsAsync()

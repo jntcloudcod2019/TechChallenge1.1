@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechChallengeFIAP", "TechChallengeFIAP\TechChallengeFIAP.csproj", "{333879CB-E38A-42D6-8D5F-8DC9E7806430}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechChallengeFIAP", "TechChallengeFIAP\TechChallengeFIAP.csproj", "{333879CB-E38A-42D6-8D5F-8DC9E7806430}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechchallengeContact.Teste", "TechchallengeContact.Teste\TechchallengeContact.Teste.csproj", "{CF19C5DA-79C6-4187-B224-DD364D7A8287}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{333879CB-E38A-42D6-8D5F-8DC9E7806430}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{333879CB-E38A-42D6-8D5F-8DC9E7806430}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{333879CB-E38A-42D6-8D5F-8DC9E7806430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF19C5DA-79C6-4187-B224-DD364D7A8287}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF19C5DA-79C6-4187-B224-DD364D7A8287}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF19C5DA-79C6-4187-B224-DD364D7A8287}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF19C5DA-79C6-4187-B224-DD364D7A8287}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
