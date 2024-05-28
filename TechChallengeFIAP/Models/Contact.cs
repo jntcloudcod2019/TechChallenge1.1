@@ -4,8 +4,10 @@ namespace TechChallengeFIAP.Models
 {
     public class Contact
     {
+        [Key]
+        [Required]
         public int Id { get; set; }
-
+        
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
 
@@ -18,6 +20,6 @@ namespace TechChallengeFIAP.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "DDD is required.")]
-        public string DDD { get; set; }
+        public int Ddd { get; set; }
     }
 }

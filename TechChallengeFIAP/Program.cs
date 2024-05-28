@@ -7,7 +7,7 @@ using TechChallengeFIAP.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Serilog
+// Configuração Serilog
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.FromLogContext()
@@ -19,15 +19,20 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-// Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 21))));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+// Criação do Midd que vai fazer a conexão com o banco de dados
+builder.Services.AddDbContext<ContactDbContext>(options =>
+ options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
 
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddControllersWithViews();
 
-// Configure Swagger
+
+
+// Configuração Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
