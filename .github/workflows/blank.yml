@@ -1,4 +1,4 @@
-name: .NET Core CI/CD Pipeline
+name: .NET Core CI/CD Pipelines
 
 on:
   push:
